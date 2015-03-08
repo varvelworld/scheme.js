@@ -96,6 +96,15 @@ function eval(x, env) {
                     for(var i = 1; i < x.length - 1; ++i)
                         eval(x[i], env);
                     return eval(x[x.length - 1], env);
+                case 'lambda':
+                    var argNames = x[1];
+                    var lambdaBody = x[2];
+                    return function (args) {
+                        var newEnv = new Env(env);
+                        for(var i = 0; i < argNames.length; ++i)
+                            newEnv[argNames[i]] = args[i];
+                        return eval(lambdaBody, newEnv);
+                    };
                 default :
                     var args = [];
                     for(var i = 1; i < x.length; ++i)
@@ -108,6 +117,7 @@ function eval(x, env) {
     }
 }
 
-var code = "(begin (define x 1) (* (+ x (- x (/ 1 2))) 2))";
+//var code = "(begin (define x 1) (* (+ x (- x (/ 1 2))) 2))";
+var code = "(begin (define area (lambda (r) (* 3.141592653 (* r r)))) (area 3))"
 console.log(code);
 console.log(eval(parse(code), createGlobalEnv()));
