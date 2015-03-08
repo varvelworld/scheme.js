@@ -38,6 +38,7 @@ function Env(outer){
 
 function createGlobalEnv() {
     var globalEnv = new Env(null);
+    // 添加内置函数
     globalEnv['+'] = function (args){
         var r = args[0];
         for(var i = 1; i < args.length; ++i)
@@ -116,8 +117,3 @@ function eval(x, env) {
             console.log("error");
     }
 }
-
-//var code = "(begin (define x 1) (* (+ x (- x (/ 1 2))) 2))";
-var code = "(begin (define area (lambda (r) (* 3.141592653 (* r r)))) (area 3))"
-console.log(code);
-console.log(eval(parse(code), createGlobalEnv()));
